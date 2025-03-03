@@ -19,19 +19,50 @@ import { FiClock } from "react-icons/fi";
 import GuestDropdown from "./GuestDropdown";
 import { GiCook, GiWashingMachine } from "react-icons/gi";
 import { MdWarning } from "react-icons/md";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import AmenitiesPopup from "./AmenitiesPopup";
 
 export default function PropertyDetails() {
-  const [checkInDate, setCheckInDate] = useState(null);
-  const [checkOutDate, setCheckOutDate] = useState(null);
-  const [guests, setGuests] = useState({
-    adults: 1,
-    children: 0,
-    infants: 0,
-    pets: 0,
+  const [checkInDate, setCheckInDate] = useState(() => {
+    const saved = localStorage.getItem("checkInDate");
+    return saved ? new Date(JSON.parse(saved)) : null;
   });
+
+  const [checkOutDate, setCheckOutDate] = useState(() => {
+    const saved = localStorage.getItem("checkOutDate");
+    return saved ? new Date(JSON.parse(saved)) : null;
+  });
+
+  const [guests, setGuests] = useState(() => {
+    const saved = localStorage.getItem("guests");
+    return saved
+      ? JSON.parse(saved)
+      : { adults: 1, children: 0, infants: 0, pets: 0 };
+  });
+
+  useEffect(() => {
+    if (checkInDate) {
+      localStorage.setItem(
+        "checkInDate",
+        JSON.stringify(checkInDate.getTime())
+      );
+    }
+  }, [checkInDate]);
+
+  useEffect(() => {
+    if (checkOutDate) {
+      localStorage.setItem(
+        "checkOutDate",
+        JSON.stringify(checkOutDate.getTime())
+      );
+    }
+  }, [checkOutDate]);
+
+  useEffect(() => {
+    localStorage.setItem("guests", JSON.stringify(guests));
+  }, [guests]);
+
   const [showAmenities, setShowAmenities] = useState(false);
 
   const handleReservation = async () => {
@@ -56,7 +87,6 @@ export default function PropertyDetails() {
         },
         totalGuests: guests.adults + guests.children,
       };
-
       const response = await axios.post(
         "https://airbnb-assignment.onrender.com/api/reservations",
         reservationData
@@ -64,14 +94,14 @@ export default function PropertyDetails() {
       alert("Reservation successful!");
       console.log("Reservation created:", response.data);
 
-      setCheckInDate(null);
-      setCheckOutDate(null);
-      setGuests({
-        adults: 1,
-        children: 0,
-        infants: 0,
-        pets: 0,
-      });
+      // setCheckInDate(null);
+      // setCheckOutDate(null);
+      // setGuests({
+      //   adults: 1,
+      //   children: 0,
+      //   infants: 0,
+      //   pets: 0,
+      // });
     } catch (error) {
       alert(
         "Reservation failed: " + (error.response?.data?.error || error.message)
@@ -242,22 +272,17 @@ export default function PropertyDetails() {
               ))}
             </div>
 
-            {/* <button className="mt-4 text-black border rounded-xl p-2 font-medium hover:bg-gray-100 transition-colors duration-200">
+            <button
+              onClick={() => setShowAmenities(true)}
+              className="mt-4 text-black border rounded-xl p-2 font-medium hover:bg-gray-100 transition-colors duration-200"
+            >
               Show all amenities
-            </button> */}
-            <button 
-        onClick={() => setShowAmenities(true)}
-        className="mt-4 text-black border rounded-xl p-2 font-medium hover:bg-gray-100 transition-colors duration-200"
-      >
-        Show all amenities
-      </button>
+            </button>
 
-      <AmenitiesPopup 
-        isOpen={showAmenities}
-        onClose={() => setShowAmenities(false)}
-      />
-
-
+            <AmenitiesPopup
+              isOpen={showAmenities}
+              onClose={() => setShowAmenities(false)}
+            />
           </div>
         </div>
 
@@ -285,6 +310,10 @@ export default function PropertyDetails() {
                       onChange={(date) => setCheckInDate(date)}
                       className="w-full outline-none"
                       placeholderText="Add date"
+                      selectsStart
+                      startDate={checkInDate}
+                      endDate={checkOutDate}
+                      minDate={new Date()}
                     />
                   </div>
                   <div className="flex-1 p-3">
@@ -294,6 +323,10 @@ export default function PropertyDetails() {
                       onChange={(date) => setCheckOutDate(date)}
                       className="w-full outline-none"
                       placeholderText="Add date"
+                      selectsEnd
+                      startDate={checkInDate}
+                      endDate={checkOutDate}
+                      minDate={checkInDate}
                     />
                   </div>
                 </div>
