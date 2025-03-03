@@ -80,8 +80,8 @@ const GuestDropdown = ({ guests, setGuests }) => {
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white border rounded-lg shadow-lg p-1 mt-2 z-10 w-full max-w-[400px]">
-          <div className="mb-4 space-y-4">
+        <div className="absolute top-full left-0 right-0 bg-white border rounded-lg shadow-lg p-1 mt-3 z-10 w-full max-w-[400px]">
+          <div className="mb-4 space-y-3">
             {/* Adults */}
             <div className="flex justify-between items-center">
               <div>
@@ -187,10 +187,10 @@ const GuestDropdown = ({ guests, setGuests }) => {
             infants, and {maxPets} pets
           </div>
 
-          <div className="pt-4 mt-4 flex justify-end">
+          <div className="pt-1 flex justify-end">
             <button
               onClick={() => setIsOpen(false)}
-              className="block text-right py-2 px-2 rounded-md hover:rounded-xl text-black underline hover:bg-gray-100 transition-colors"
+              className="block text-right px-2 rounded-md hover:rounded-xl text-black underline hover:bg-gray-100 transition-colors"
             >
               Close
             </button>
@@ -201,4 +201,5 @@ const GuestDropdown = ({ guests, setGuests }) => {
   );
 };
 
-export default GuestDropdown;
+ export default GuestDropdown;
+
