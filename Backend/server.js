@@ -9,6 +9,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+// app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
@@ -33,6 +34,10 @@ const reservationSchema = new mongoose.Schema({
 const Reservation = mongoose.model('Reservation', reservationSchema);
 
 // Routes
+app.get ('/', (req, res) => {
+  res.send('Hello World');
+});
+
 app.post('/api/reservations', async (req, res) => {
   try {
     const {checkIn, checkOut, guests } = req.body;
