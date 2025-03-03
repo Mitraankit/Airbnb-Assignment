@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 const corsOptions = {
-  origin: 'https://airbnb-assignment-dfwiys7py-mitraankits-projects.vercel.app/',
+  origin: 'https://airbnb-assignment-seven.vercel.app/',
   methods: ['GET', 'POST'],
   credentials: true,
 };
