@@ -3,8 +3,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-
-app.use(cors());
+const corsOptions = {
+  origin: 'https://airbnb-assignment-dfwiys7py-mitraankits-projects.vercel.app/',
+  methods: ['GET', 'POST'],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // MongoDB Connection

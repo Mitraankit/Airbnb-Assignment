@@ -58,7 +58,7 @@ export default function PropertyDetails() {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/api/reservations",
+        "https://airbnb-assignment.onrender.com/api/reservations",
         reservationData
       );
       alert("Reservation successful!");
